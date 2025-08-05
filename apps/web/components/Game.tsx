@@ -436,10 +436,26 @@ export default function Game() {
       </div>
       
       {/* Leaderboard Modal */}
-      <Leaderboard 
-        isOpen={showLeaderboard} 
-        onClose={() => setShowLeaderboard(false)} 
-      />
+      {showLeaderboard && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="bg-gray-900 rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto relative"
+          >
+            <button
+              onClick={() => setShowLeaderboard(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <Leaderboard />
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
