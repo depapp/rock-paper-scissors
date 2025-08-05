@@ -5,10 +5,10 @@ nixPkgs = ["nodejs-18_x"]
 cmds = ["npm install"]
 
 [phases.build]
-cmds = ["npm run build:server"]
+cmds = ["cd apps/server && npm run build"]
 
 [start]
-cmd = "npm run start:server"
+cmd = "cd apps/server && npm run start"
 
 [variables]
 NODE_ENV = "production"
