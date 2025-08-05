@@ -15,6 +15,9 @@
     "clean": "npm run clean --workspace=apps/server"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^8.2.2",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17"
   }
 }
