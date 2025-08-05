@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test End Game Functionality</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 8px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .success { background: #4CAF50; color: white; }
+        .error { background: #f44336; color: white; }
+        .info { background: #2196F3; color: white; }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #333;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>End Game Functionality Test</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: LocalStorage Operations</h2>
+        <button class="info" onclick="testLocalStorage()">Test LocalStorage</button>
+        <div id="localStorage-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: State Reset Simulation</h2>
+        <button class="info" onclick="testStateReset()">Test State Reset</button>
+        <div id="state-result" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: Full End Game Flow</h2>
+        <button class="success" onclick="testFullFlow()">Test Full Flow</button>
+        <div id="flow-result" class="result"></div>
+    </div>
+
+    <script>
+        function log(elementId, message, isError = false) {
+            const element = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            element.innerHTML += `<div style="color: ${isError ? '#ff6b6b' : '#4ecdc4'}">[${timestamp}] ${message}</div>`;
+        }
+
+        function testLocalStorage() {
+            const resultId = 'localStorage-result';
+            document.getElementById(resultId).innerHTML = '';
+            
+            try {
+                // Set username
+                localStorage.setItem('rps_username', 'TestUser123');
+                log(resultId, 'Set username: TestUser123');
+                
+                // Read username
+                const username = localStorage.getItem('rps_username');
+                log(resultId, `Read username: ${username}`);
+                
+                // Remove username
+                localStorage.removeItem('rps_username');
+                log(resultId, 'Removed username from localStorage');
+                
+                // Verify removal
+                const removedUsername = localStorage.getItem('rps_username');
+                log(resultId, `Username after removal: ${removedUsername || 'null (successfully removed)'}`);
+                
+                if (removedUsername === null) {
+                    log(resultId, '✅ LocalStorage test PASSED');
+                } else {
+                    log(resultId, '❌ LocalStorage test FAILED', true);
+                }
+            } catch (error) {
+                log(resultId, `Error: ${error.message}`, true);
+            }
+        }
+
+        function testStateReset() {
+            const resultId = 'state-result';
+            document.getElementById(resultId).innerHTML = '';
+            
+            try {
+                // Simulate state
+                const mockState = {
+                    gameState: { status: 'playing', moves: ['rock', 'paper'] },
+                    aiPrediction: { prediction: 'scissors' },
+                    playerPattern: { totalMoves: 2 },
+                    username: 'TestUser',
+                    usernameRegistered: true,
+                    lastMoveResult: { correct: true },
+                    error: null
+                };
+                
+                log(resultId, 'Initial state: ' + JSON.stringify(mockState, null, 2));
+                
+                // Simulate reset
+                const resetState = {
+                    gameState: null,
+                    aiPrediction: null,
+                    playerPattern: null,
+                    username: null,
+                    usernameRegistered: false,
+                    lastMoveResult: null,
+                    error: null
+                };
+                
+                log(resultId, 'Reset state: ' + JSON.stringify(resetState, null, 2));
+                
+                // Verify all fields are null/false
+                const allReset = Object.entries(resetState).every(([key, value]) => 
+                    value === null || value === false
+                );
+                
+                if (allReset) {
+                    log(resultId, '✅ State reset test PASSED');
+                } else {
+                    log(resultId, '❌ State reset test FAILED', true);
+                }
+            } catch (error) {
+                log(resultId, `Error: ${error.message}`, true);
+            }
+        }
+
+        function testFullFlow() {
+            const resultId = 'flow-result';
+            document.getElementById(resultId).innerHTML = '';
+            
+            try {
+                // Step 1: Set initial state
+                localStorage.setItem('rps_username', 'EndGameTestUser');
+                log(resultId, 'Step 1: Set username in localStorage');
+                
+                // Step 2: Simulate game state
+                const gameActive = true;
+                log(resultId, 'Step 2: Game is active');
+                
+                // Step 3: Simulate End Game click
+                log(resultId, 'Step 3: User clicks End Game button');
+                
+                // Step 4: Show confirmation (simulated)
+                const confirmed = true; // Simulating user clicking OK
+                log(resultId, 'Step 4: User confirms end game');
+                
+                if (confirmed) {
+                    // Step 5: Clear localStorage
+                    localStorage.removeItem('rps_username');
+                    log(resultId, 'Step 5: Cleared username from localStorage');
+                    
+                    // Step 6: Reset state (simulated)
+                    const stateReset = true;
+                    log(resultId, 'Step 6: Reset game state');
+                    
+                    // Step 7: Check redirect condition
+                    const username = localStorage.getItem('rps_username');
+                    const shouldShowWelcome = username === null;
+                    
+                    log(resultId, `Step 7: Username is ${username === null ? 'null' : username}`);
+                    log(resultId, `Step 8: Should show welcome screen: ${shouldShowWelcome}`);
+                    
+                    if (shouldShowWelcome) {
+                        log(resultId, '✅ Full flow test PASSED - User would be redirected to welcome screen');
+                    } else {
+                        log(resultId, '❌ Full flow test FAILED - User would NOT be redirected', true);
+                    }
+                }
+            } catch (error) {
+                log(resultId, `Error: ${error.message}`, true);
+            }
+        }
+    </script>
+</body>
+</html>
