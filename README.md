@@ -2,6 +2,9 @@
 
 An innovative real-time AI-powered prediction game where players battle against an AI that learns their patterns and tries to predict their next move in Rock Paper Scissors. Built for the Redis "Real-Time AI Innovators" challenge.
 
+## Full Explanation on DEV.to Article
+- https://dev.to/depapp/building-a-mind-reading-ai-rock-paper-scissors-with-redis-8s-real-time-magic-3d7h
+
 ## 🎮 Game Concept
 
 Players choose between Rock ✊, Paper 📄, or Scissors ✂️ while an AI analyzes their patterns in real-time and predicts their next choice. The AI's prediction is hidden until after the player makes their choice, creating true suspense. The AI gets smarter with each move, learning from:
